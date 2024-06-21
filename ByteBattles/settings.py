@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'ByteBattles',
-    'accounts'
+    'accounts',
+    'contest',
+    'journal',
+    'problems'
 ]
 
 MIDDLEWARE = [
