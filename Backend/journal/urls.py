@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from .views import UserLoginAPiView, UserRegisterationAPIView, UserLogoutAPIView
 
-urlpatterns = [
-    path('login/', UserLoginAPiView.as_view(), name='login'),
-    path('register/', UserRegisterationAPIView.as_view(), name='register'),
-    path('logout/', UserLogoutAPIView.as_view(), name='logout')
-]
+# urlpatterns = [
+#     path('login/', UserLoginAPiView.as_view(), name='login'),
+#     path('register/', UserRegisterationAPIView.as_view(), name='register'),
+#     path('logout/', UserLogoutAPIView.as_view(), name='logout')
+# ]
