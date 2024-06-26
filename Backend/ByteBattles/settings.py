@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'accounts',
     'contest',
     'journal',
-    'problems'
+    'problems',
+    'compiler',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -53,8 +55,11 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True 
 
 ROOT_URLCONF = 'ByteBattles.urls'
 
@@ -139,3 +144,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# settings.py
+APPEND_SLASH = True

@@ -20,15 +20,3 @@ class Testcases(models.Model):
     input = models.TextField()
     output = models.TextField()
     
-class Submissions(models.Model):
-    problem = models.ForeignKey(Problems, on_delete=models.CASCADE)
-    code = models.TextField()
-    username=models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    result = models.CharField(
-        max_length=10,
-        choices=[
-            ('pass', 'Pass'),
-            ('fail', 'Fail')
-        ]
-    )
-    submitted_at = models.DateTimeField(auto_now_add=True)

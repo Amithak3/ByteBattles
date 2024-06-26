@@ -22,5 +22,6 @@ urlpatterns = [
     path('auth/', include('accounts.urls')),
     # path('contest/', include('contest.urls')),
     # path('journal/', include('journal.urls')),
-    path('problems/', include('problems.urls'))
+    path('problems/', include('problems.urls')),
+    path('compiler/', include('compiler.urls'))
 ]

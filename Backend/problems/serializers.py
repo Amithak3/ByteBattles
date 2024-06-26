@@ -3,10 +3,16 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers
 from .models import Problems
 
-class ProblemsSerializer(serializers.ModelSerializer):
+
+        
+
+class TestcaseSerializer(serializers.Serializer):
     class Meta:
-        model = Problems
         fields = '__all__'
         
 
-        
+class ProblemsSerializer(serializers.ModelSerializer):
+    testcases = TestcaseSerializer(many=True)
+    class Meta:
+        model = Problems
+        fields = '__all__'
