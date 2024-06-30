@@ -1,13 +1,12 @@
-// src/pages/SignIn.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; 
+import axios from "axios";
 import Header from '../components/Header';
 import "./SignIn.css";
 
 const SignIn = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({ 
+    const [formData, setFormData] = useState({
         username: '',
         password: ''
     });
@@ -31,7 +30,7 @@ const SignIn = () => {
         } catch (error) {
             console.error("Login failed: ", error);
             if (error.response && error.response.data) {
-                setError(error.response.data.detail || "Login failed");
+                setError(error.response.data.non_field_errors || error.response.data.detail || "Login failed");
             } else {
                 setError("An unexpected error occurred");
             }

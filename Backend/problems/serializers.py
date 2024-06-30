@@ -1,18 +1,15 @@
-
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers
-from .models import Problems
+from .models import Problems, Testcases
 
-
-        
-
-class TestcaseSerializer(serializers.Serializer):
+class TestcaseSerializer(serializers.HyperlinkedModelSerializer):
+    
     class Meta:
-        fields = '__all__'
-        
+        model = Testcases
+        fields = "__all__"
 
-class ProblemsSerializer(serializers.ModelSerializer):
-    testcases = TestcaseSerializer(many=True)
+class ProblemsSerializer(serializers.HyperlinkedModelSerializer):
+    id=serializers.IntegerField(read_only=True)
     class Meta:
         model = Problems
-        fields = '__all__'
+        fields = "__all__"
+

@@ -19,7 +19,7 @@
   
   .header-button {
     color: #fff;
-    background-color: #ff0000;
+    background-color: #1f1b1b;
     padding: 0.5rem 1rem;
     text-decoration: none;
     border-radius: 5px;
@@ -27,6 +27,6 @@
   }
   
   .header-button:hover {
-    background-color: #cc0000;
+    background-color: #c60e0e;
   }
   

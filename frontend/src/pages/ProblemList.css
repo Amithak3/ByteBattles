@@ -1,0 +1,63 @@
+.problem-list-page {
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+}
+
+.problem-list-content {
+    padding: 20px;
+}
+
+.problem-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.create-problem-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.create-problem-button:hover {
+    background-color: darkred;
+}
+
+.problem-list {
+    list-style: none;
+    padding: 0;
+}
+
+.problem-item {
+    border: 1px solid white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.problem-item h2 {
+    margin: 0 0 10px;
+}
+
+.problem-item .difficulty {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.difficulty.easy {
+    background-color: green;
+}
+
+.difficulty.medium {
+    background-color: orange;
+}
+
+.difficulty.hard {
+    background-color: red;
+}
