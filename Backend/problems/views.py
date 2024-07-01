@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Problems, Testcases
@@ -13,6 +13,12 @@ class ProblemViewSet(viewsets.ModelViewSet):
     queryset = Problems.objects.all()
     serializer_class = ProblemsSerializer
 
+    @action(detail=True, methods=['get'])
+    def testcases(self, request, pk=None):
+        problem = Problems.objects.get(id=pk)
+        testcases = Testcases.objects.filter(problem=problem)
+        serializer = TestcaseSerializer(testcases, many=True, context={'request': request})
+        return Response(serializer.data)
 
 class TestcaseViewSet(viewsets.ModelViewSet):
     authentication_classes = []

@@ -15,6 +15,9 @@ class Problems(models.Model):
         ]
     )
     
+    def __str__(self):
+        return self.name
+    
 class Testcases(models.Model):
     problem = models.ForeignKey(Problems, on_delete=models.CASCADE)
     input = models.TextField()
