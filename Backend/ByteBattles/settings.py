@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'contest',
     'journal',
-    'problems',
+    'problem',
     'compiler',
     'corsheaders'
 ]

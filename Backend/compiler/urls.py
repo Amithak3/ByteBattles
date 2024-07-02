@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import SubmitCodeAPIView
+from . import views
 
 urlpatterns = [
-    # path('run/' )
-    path('submit/' , SubmitCodeAPIView.as_view(), name='submit_code')
+    path('run/', views.run_code, name='run_code'),
+    path('submit/' , views.submit_code, name='submit_code')
 ]

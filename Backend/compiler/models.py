@@ -1,5 +1,5 @@
 from django.db import models
-from problems.models import Problems
+from problem.models import Problems
 from accounts.models import CustomUser
 # Create your models here.
 
@@ -11,7 +11,6 @@ class Submissions(models.Model):
         choices=[
             ('python', 'Python'),
             ('java', 'Java'),
-            ('c', 'C'),
             ('cpp', 'C++')
         ]
     )
