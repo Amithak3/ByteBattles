@@ -26,7 +26,7 @@ const SignIn = () => {
             const { access } = response.data.tokens;
             localStorage.setItem('accessToken', access);
             console.log(response.data);
-            navigate('/problems');
+            navigate('/');
         } catch (error) {
             console.error("Login failed: ", error);
             if (error.response && error.response.data) {

@@ -1,111 +1,130 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { API_SERVER_URL } from "../configs/themeConfig";
-import "./ProblemDetail.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+import './ProblemDetail.css';
 
-function ProblemDetail() {
-  const { code } = useParams();
+const ProblemDetail = () => {
+    const { id } = useParams();
     const [problem, setProblem] = useState(null);
-    const [codeInput, setCodeInput] = useState('');
-    const [selectedLang, setSelectedLang] = useState('python');
-    const [submitted, setSubmitted] = useState(false);
-    const [responseOutput, setResponseOutput] = useState('');
+    const [code, setCode] = useState('');
+    const [language, setLanguage] = useState('python');
+    const [input, setInput] = useState('');
+    const [output, setOutput] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('accessToken');
+        const fetchProblem = async () => {
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/problems/problems-api/${id}/`);
+                setProblem(response.data);
+            } catch (error) {
+                console.error('Error fetching problem:', error);
+            }
+        };
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            },
-};
-axios
-    .get('http://${API_SERVER_URL}/problem/${code}', config)
-    .then((response) => {
-        setProblem(response.data);
-    })
-    .catch((error) => {
-        console.error('Error fetching problem', error);
-    });
-}, [code]);
+        fetchProblem();
+    }, [id]);
 
-const handleSubmit =  () => {
-    setSubmitting(true);
-    console.log('submitting code in selected language', codeInput, selectedLang);
-    const formData = new URLSearchParams();
-    formData.append('language', selectedLang);
-    formData.append('problem_code', code);
-    formData.append('code', codeInput);
+    const handleRun = async () => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            console.error('No access token found');
+            navigate('/signin');  // Redirect to login if token is not found
+            return;
+        }
 
-    const accessToken = localStorage.getItem('accessToken');
-
-    const config = {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
+        try {
+            const response = await axios.post(
+                'http://127.0.0.1:8000/compiler/run/',
+                {
+                    language,
+                    code,
+                    input
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            setOutput(response.data.output); // Update output state with response data
+        } catch (error) {
+            console.error('Error running code:', error);
+            setOutput('Error running code');
+        }
     };
 
-    axios
-        .post('http://${API_SERVER_URL}/submit/', formData, config)
-        .then((response) => {
-            console.log('Submission response', response.data);
-            setResponseOutput(response.data.output);
-        })
-        .catch((error) => {
-            console.error('Error submitting code', error);
-        })
-        .finally(() => {
-            setCodeInput('');
-            setSubmitting(false);
-        });
+    const handleSubmit = async () => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            console.error('No access token found');
+            navigate('/login');  // Redirect to login if token is not found
+            return;
+        }
+
+        try {
+            const response = await axios.post(
+                'http://127.0.0.1:8000/compiler/submit/',
+                {
+                    problem_id: id, 
+                    username: token.username, 
+                    code,
+                    language,
+                    verdict: '', // Leave empty, server should populate this
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            setOutput(`Submission ID: ${response.data.id}, Result: ${response.data.result}`); // Update output state with submission details
+        } catch (error) {
+            console.error('Error submitting code:', error);
+            setOutput('Error submitting code');
+        }
     };
 
-    if (!problem) {
-        return <div className="loading">Loading...</div>;
-    }
+    if (!problem) return <div>Loading...</div>;
 
     return (
-        <div className="problem-detail-container">
-          <h2 className="problem-detail-title">{problem.name}</h2>
-          <div className="problem-detail-content">
-            <div className="problem-statement">{problem.statement}</div>
-          </div>
-          {/* <div className="problem-detail-content"> */}
-          <div className="language-select">
-            <label htmlFor="language">Select Language:</label>
-            <select
-              id="language"
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
-            >
-              <option value="c">C</option>
-              <option value="cpp">C++</option>
-              <option value="py">Python</option>
-            </select>
-          </div>
-          <textarea
-            className="code-input"
-            placeholder="Enter your code here..."
-            value={codeInput}
-            onChange={(e) => setCodeInput(e.target.value)}
-          />
-          <button
-            className="submit-button"
-            onClick={handleSubmit}
-            disabled={submitting}
-          >
-            {submitting ? "Submitting..." : "Submit"}
-          </button>
-          {/* Display response output */}
-          {responseOutput && (
-            <div>
-              <h2>Output:</h2>
-              <pre>{responseOutput}</pre>
+        <div className="problem-detail-page">
+            <Header />
+            <div className="problem-detail-content">
+                <div className="problem-detail-section">
+                    <h1>{problem.name}</h1>
+                    <p>{problem.description}</p>
+                </div>
+                <div className="code-editor-section">
+                    <select
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                    >
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="c++">C++</option>
+                    </select>
+                    <textarea
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        placeholder="Write your code here"
+                    />
+                    <textarea
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Input for the code"
+                    />
+                    <button className="run-button" onClick={handleRun}>Run</button>
+                    <button className="submit-button" onClick={handleSubmit}>Submit</button>
+                </div>
+                <div className="output-section">
+                    <h2>Output</h2>
+                    <pre>{output}</pre>
+                </div>
             </div>
-          )}
         </div>
-      );
-    }
+    );
+};
 
-    export default ProblemDetail;
+export default ProblemDetail;

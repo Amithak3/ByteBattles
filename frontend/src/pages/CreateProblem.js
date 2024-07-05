@@ -1,143 +1,131 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../components/Header';
 import './CreateProblem.css';
 
 const CreateProblem = () => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        difficulty: 'easy',
-        testcases: [{ input: '', output: '' }]
-    });
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [difficulty, setDifficulty] = useState('easy');
+    const [testcases, setTestcases] = useState([{ input: '', output: '' }]);
+    const [message, setMessage] = useState('');
+    const [problemId, setProblemId] = useState(null);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+    const handleAddTestcase = () => {
+        setTestcases([...testcases, { input: '', output: '' }]);
     };
 
-    const handleTestcaseChange = (index, e) => {
-        const { name, value } = e.target;
-        const newTestcases = [...formData.testcases];
-        newTestcases[index][name] = value;
-        setFormData({
-            ...formData,
-            testcases: newTestcases
-        });
+    const handleTestcaseChange = (index, field, value) => {
+        const newTestcases = [...testcases];
+        newTestcases[index][field] = value;
+        setTestcases(newTestcases);
     };
 
-    const addTestcase = () => {
-        setFormData({
-            ...formData,
-            testcases: [...formData.testcases, { input: '', output: '' }]
-        });
-    };
-
-    const removeTestcase = (index) => {
-        const newTestcases = [...formData.testcases];
-        newTestcases.splice(index, 1);
-        setFormData({
-            ...formData,
-            testcases: newTestcases
-        });
-    };
-
-    const handleSubmit = async (e) => {
+    const handleCreateProblem = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('accessToken');
-            const config = {
-                headers: { Authorization: `Bearer ${token}` }
-            };
-            await axios.post('http://127.0.0.1:8000/problems/create/', formData, config);
-            navigate('/problems');
+            // Create the problem
+            const response = await axios.post('http://127.0.0.1:8000/problems/problems-api/', {
+                name,
+                description,
+                difficulty
+            });
+
+            const newProblemId = response.data.id;
+            setProblemId(newProblemId);
+            setMessage('Problem created successfully! Now add test cases.');
         } catch (error) {
             console.error('Error creating problem:', error);
+            setMessage('Failed to create problem.');
+        }
+    };
+
+    const handleSubmitTestcases = async (e) => {
+        e.preventDefault();
+        try {
+            // Create test cases
+            for (const testcase of testcases) {
+                await axios.post('http://127.0.0.1:8000/problems/testcases-api/', {
+                    problem: problemId,
+                    input: testcase.input,
+                    output: testcase.output
+                });
+            }
+
+            setMessage('Test cases created successfully!');
+        } catch (error) {
+            console.error('Error creating test cases:', error.response);
+            setMessage('Failed to create test cases.');
         }
     };
 
     return (
         <div className="create-problem-page">
-            <Header />
-            <div className="create-problem-content">
-                <h1>Create Problem</h1>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Name
+            <h1>Create Problem</h1>
+            {!problemId ? (
+                <form onSubmit={handleCreateProblem} className="create-problem-form">
+                    <div className="form-group">
+                        <label>Name</label>
                         <input
                             type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             required
                         />
-                    </label>
-                    <label>
-                        Description
+                    </div>
+                    <div className="form-group">
+                        <label>Description</label>
                         <textarea
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             required
-                        ></textarea>
-                    </label>
-                    <label>
-                        Difficulty
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Difficulty</label>
                         <select
-                            name="difficulty"
-                            value={formData.difficulty}
-                            onChange={handleChange}
+                            value={difficulty}
+                            onChange={(e) => setDifficulty(e.target.value)}
+                            required
                         >
                             <option value="easy">Easy</option>
                             <option value="medium">Medium</option>
                             <option value="hard">Hard</option>
                         </select>
-                    </label>
-                    <div className="testcases">
+                    </div>
+                    <button type="submit" className="submit-button">Create Problem</button>
+                </form>
+            ) : (
+                <form onSubmit={handleSubmitTestcases} className="create-problem-form">
+                    <div className="testcases-section">
                         <h2>Test Cases</h2>
-                        {formData.testcases.map((testcase, index) => (
-                            <div key={index} className="testcase">
-                                <label>
-                                    Input
-                                    <textarea
-                                        name="input"
-                                        value={testcase.input}
-                                        onChange={(e) => handleTestcaseChange(index, e)}
-                                        required
-                                    ></textarea>
-                                </label>
-                                <label>
-                                    Output
-                                    <textarea
-                                        name="output"
-                                        value={testcase.output}
-                                        onChange={(e) => handleTestcaseChange(index, e)}
-                                        required
-                                    ></textarea>
-                                </label>
-                                {formData.testcases.length > 1 && (
-                                    <button
-                                        type="button"
-                                        className="remove-testcase"
-                                        onClick={() => removeTestcase(index)}
-                                    >
-                                        Remove Testcase
-                                    </button>
-                                )}
+                        {testcases.map((testcase, index) => (
+                            <div key={index} className="form-group">
+                                <label>Input</label>
+                                <textarea
+                                    value={testcase.input}
+                                    onChange={(e) =>
+                                        handleTestcaseChange(index, 'input', e.target.value)
+                                    }
+                                    required
+                                />
+                                <label>Output</label>
+                                <textarea
+                                    value={testcase.output}
+                                    onChange={(e) =>
+                                        handleTestcaseChange(index, 'output', e.target.value)
+                                    }
+                                    required
+                                />
                             </div>
                         ))}
-                        <button type="button" className="add-testcase" onClick={addTestcase}>
-                            Add Testcase
+                        <button type="button" onClick={handleAddTestcase}>
+                            Add Test Case
                         </button>
                     </div>
-                    <button type="submit">Create</button>
+                    <button type="submit" className="submit-button">Submit Test Cases</button>
                 </form>
-            </div>
+            )}
+            {message && <p className="message">{message}</p>}
         </div>
     );
 };

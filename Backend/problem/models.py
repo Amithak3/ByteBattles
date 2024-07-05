@@ -3,7 +3,8 @@ from accounts.models import CustomUser
 # Create your models here.
 class Problems(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=50)
+    # creater = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField()
     difficulty = models.CharField(
                 max_length=10,

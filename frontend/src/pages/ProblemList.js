@@ -11,7 +11,7 @@ const ProblemList = () => {
     useEffect(() => {
         const fetchProblems = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/problems/problemset/');
+                const response = await axios.get('http://127.0.0.1:8000/problems/problems-api/');
                 setProblems(response.data);
             } catch (error) {
                 console.error('Error fetching problems:', error);
@@ -20,6 +20,16 @@ const ProblemList = () => {
 
         fetchProblems();
     }, []);
+
+    const handleProblemClick = (id) => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            console.error('No access token found');
+            navigate('/signin');  // Redirect to login if token is not found
+            return;
+        }
+        navigate(`/problems/${id}`);
+    };
 
     return (
         <div className="problem-list-page">
@@ -31,13 +41,17 @@ const ProblemList = () => {
                         className="create-problem-button"
                         onClick={() => navigate('/create-problem')}
                     >
-                        Create Problem
+                        Create Problems
                     </button>
                 </div>
                 <ul className="problem-list">
                     {problems.map((problem) => (
-                        <li key={problem.id} className="problem-item">
-                            <h2>{problem.name}</h2>
+                        <li
+                            key={problem.id}
+                            className="problem-item"
+                            onClick={() => handleProblemClick(problem.id)}
+                        >
+                            <h3>{problem.name}</h3>
                             <span className={`difficulty ${problem.difficulty}`}>{problem.difficulty}</span>
                         </li>
                     ))}

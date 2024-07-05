@@ -2,83 +2,56 @@
     background-color: black;
     color: white;
     min-height: 100vh;
-}
-
-.create-problem-content {
     padding: 20px;
 }
 
-.create-problem-content h1 {
+.create-problem-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
     margin-bottom: 20px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 10px;
-}
-
-input, textarea, select {
-    padding: 10px;
-    margin-top: 5px;
-    background-color: #3a3838;
-    color: white;
-    border: 1px solid #555;
-    border-radius: 5px;
-}
-
-textarea[name="description"] {
-    height: 200px; /* Adjust as needed for 500 words */
-    width: 100%; /* Full width */
-}
-
-.testcases {
-    margin-top: 20px;
-}
-
-.testcase {
-    border: 1px solid #555;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-.testcase label {
+.form-group label {
     display: block;
     margin-bottom: 5px;
 }
 
-textarea[name="input"],
-textarea[name="output"] {
-    height: 100px; /* Adjust as needed */
-    width: 100%; /* Full width */
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
 }
 
-button {
+.testcases-section {
+    margin-top: 20px;
+}
+
+.testcases-section h2 {
+    margin-bottom: 10px;
+}
+
+.submit-button {
     background-color: red;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    margin-top: 10px;
+    border-radius: 5px;
 }
 
-button:hover {
+.submit-button:hover {
     background-color: darkred;
 }
 
-.add-testcase, .remove-testcase {
-    margin-top: 10px;
-    background-color: #444;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    color: white;
-}
-
-.add-testcase:hover, .remove-testcase:hover {
-    background-color: #555;
+.message {
+    margin-top: 20px;
+    color: green;
 }
