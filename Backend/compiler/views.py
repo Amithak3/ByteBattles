@@ -13,6 +13,7 @@ from .models import Submissions
 from .serializers import SubmissionsSerializer
 from django.conf import settings
 from pathlib import Path
+from rest_framework import viewsets
 
 # Create your views here.
 authentication_classes = []
@@ -138,3 +139,9 @@ def submit_code(request):
 
     serializer = SubmissionsSerializer(submission)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class SubmissionViewSet(viewsets.ModelViewSet):
+    queryset = Submissions.objects.all()
+    serializer_class = SubmissionsSerializer
+    authentication_classes = []
+    permission_classes = []

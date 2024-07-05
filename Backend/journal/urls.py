@@ -15,11 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from .views import UserLoginAPiView, UserRegisterationAPIView, UserLogoutAPIView
+from django.urls import path, include
+from .views import JournalViewSet   
+from rest_framework import routers
 
-# urlpatterns = [
-#     path('login/', UserLoginAPiView.as_view(), name='login'),
-#     path('register/', UserRegisterationAPIView.as_view(), name='register'),
-#     path('logout/', UserLogoutAPIView.as_view(), name='logout')
-# ]
+router = routers.DefaultRouter()
+router.register(r'journals', JournalViewSet)
+
+urlpatterns = [
+    path('', include(router.urls))
+]
