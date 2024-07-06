@@ -25,6 +25,7 @@ const SignIn = () => {
             const response = await axios.post('http://127.0.0.1:8000/auth/login/', formData);
             const { access } = response.data.tokens;
             localStorage.setItem('accessToken', access);
+            localStorage.setItem('username', formData.username);
             console.log(response.data);
             navigate('/');
         } catch (error) {

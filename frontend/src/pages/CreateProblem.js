@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CreateProblem.css';
 
@@ -6,24 +6,30 @@ const CreateProblem = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [difficulty, setDifficulty] = useState('easy');
-    const [testcases, setTestcases] = useState([{ input: '', output: '' }]);
+    const [testcase, setTestcase] = useState({ input: '', output: '' });
     const [message, setMessage] = useState('');
     const [problemId, setProblemId] = useState(null);
+    const [createdTestcases, setCreatedTestcases] = useState([]);
 
-    const handleAddTestcase = () => {
-        setTestcases([...testcases, { input: '', output: '' }]);
-    };
+    useEffect(() => {
+        if (problemId) {
+            fetchTestcases();
+        }
+    }, [problemId]);
 
-    const handleTestcaseChange = (index, field, value) => {
-        const newTestcases = [...testcases];
-        newTestcases[index][field] = value;
-        setTestcases(newTestcases);
+    const fetchTestcases = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/problems/problems-api/${problemId}/testcases/`);
+            setCreatedTestcases(response.data);
+        } catch (error) {
+            console.error('Error fetching test cases:', error);
+            setMessage('Failed to fetch test cases.');
+        }
     };
 
     const handleCreateProblem = async (e) => {
         e.preventDefault();
         try {
-            // Create the problem
             const response = await axios.post('http://127.0.0.1:8000/problems/problems-api/', {
                 name,
                 description,
@@ -39,22 +45,21 @@ const CreateProblem = () => {
         }
     };
 
-    const handleSubmitTestcases = async (e) => {
+    const handleSubmitTestcase = async (e) => {
         e.preventDefault();
         try {
-            // Create test cases
-            for (const testcase of testcases) {
-                await axios.post('http://127.0.0.1:8000/problems/testcases-api/', {
-                    problem: problemId,
-                    input: testcase.input,
-                    output: testcase.output
-                });
-            }
+            await axios.post('http://127.0.0.1:8000/problems/testcases-api/', {
+                problem: `http://127.0.0.1:8000/problems/problems-api/${problemId}/`,
+                input: testcase.input,
+                output: testcase.output
+            });
 
-            setMessage('Test cases created successfully!');
+            setMessage('Test case created successfully!');
+            setTestcase({ input: '', output: '' });
+            fetchTestcases();
         } catch (error) {
-            console.error('Error creating test cases:', error.response);
-            setMessage('Failed to create test cases.');
+            console.error('Error creating test case:', error.response);
+            setMessage('Failed to create test case.');
         }
     };
 
@@ -95,35 +100,43 @@ const CreateProblem = () => {
                     <button type="submit" className="submit-button">Create Problem</button>
                 </form>
             ) : (
-                <form onSubmit={handleSubmitTestcases} className="create-problem-form">
-                    <div className="testcases-section">
-                        <h2>Test Cases</h2>
-                        {testcases.map((testcase, index) => (
-                            <div key={index} className="form-group">
+                <>
+                    <form onSubmit={handleSubmitTestcase} className="create-problem-form">
+                        <div className="testcase-section">
+                            <h2>Add Test Case</h2>
+                            <div className="form-group">
                                 <label>Input</label>
                                 <textarea
                                     value={testcase.input}
                                     onChange={(e) =>
-                                        handleTestcaseChange(index, 'input', e.target.value)
-                                    }
-                                    required
-                                />
-                                <label>Output</label>
-                                <textarea
-                                    value={testcase.output}
-                                    onChange={(e) =>
-                                        handleTestcaseChange(index, 'output', e.target.value)
+                                        setTestcase({ ...testcase, input: e.target.value })
                                     }
                                     required
                                 />
                             </div>
+                            <div className="form-group">
+                                <label>Output</label>
+                                <textarea
+                                    value={testcase.output}
+                                    onChange={(e) =>
+                                        setTestcase({ ...testcase, output: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <button type="submit" className="submit-button">Submit Test Case</button>
+                    </form>
+                    <div className="created-testcases">
+                        <h2>Created Test Cases</h2>
+                        {createdTestcases.map((tc, index) => (
+                            <div key={index} className="testcase-display">
+                                <div><strong>Input:</strong> {tc.input}</div>
+                                <div><strong>Output:</strong> {tc.output}</div>
+                            </div>
                         ))}
-                        <button type="button" onClick={handleAddTestcase}>
-                            Add Test Case
-                        </button>
                     </div>
-                    <button type="submit" className="submit-button">Submit Test Cases</button>
-                </form>
+                </>
             )}
             {message && <p className="message">{message}</p>}
         </div>

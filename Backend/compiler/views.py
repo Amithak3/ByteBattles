@@ -107,12 +107,16 @@ authentication_classes = []
 permission_classes = []
 @api_view(['POST'])
 def submit_code(request):
-    id = request.data.get('id')
+    # print("Hello start")
+    id = request.data.get('problem_id')
     username = request.data.get('username')
     code = request.data.get('code')
     language = request.data.get('language')
-
+    # print("Hello param")
+    
+    # print(id, code, language, username)
     if not id or not username or not code or not language:
+        print("Hello error")
         return Response(
             {'error': 'All fields (problem_id, username, code, language) are required.'}, 
             status=status.HTTP_400_BAD_REQUEST
@@ -128,7 +132,7 @@ def submit_code(request):
         if output != testcase.output:
             verdict = 'Fail'
             break
-
+    print("Hello")
     submission = Submissions.objects.create(
         problem=problem,
         code=code,

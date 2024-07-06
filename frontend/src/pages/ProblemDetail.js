@@ -56,19 +56,22 @@ const ProblemDetail = () => {
     };
 
     const handleSubmit = async () => {
+        // console.log('id=', id);
         const token = localStorage.getItem('accessToken');
         if (!token) {
             console.error('No access token found');
             navigate('/login');  // Redirect to login if token is not found
             return;
         }
+        // console.log('user=', localStorage.getItem('username'));
 
         try {
             const response = await axios.post(
                 'http://127.0.0.1:8000/compiler/submit/',
                 {
+                    
                     problem_id: id, 
-                    username: token.username, 
+                    username: localStorage.getItem('username'), 
                     code,
                     language,
                     verdict: '', // Leave empty, server should populate this
@@ -79,7 +82,7 @@ const ProblemDetail = () => {
                     }
                 }
             );
-            setOutput(`Submission ID: ${response.data.id}, Result: ${response.data.result}`); // Update output state with submission details
+            setOutput(`Result: ${response.data.result}`); // Update output state with submission details
         } catch (error) {
             console.error('Error submitting code:', error);
             setOutput('Error submitting code');
