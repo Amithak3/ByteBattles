@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CreateProblem.css';
+import Header from '../components/Header'; // Import the Header component
 
 const CreateProblem = () => {
     const [name, setName] = useState('');
@@ -49,6 +50,7 @@ const CreateProblem = () => {
         e.preventDefault();
         try {
             await axios.post('http://127.0.0.1:8000/problems/testcases-api/', {
+                //eslint-disable-next-line
                 problem: `http://127.0.0.1:8000/problems/problems-api/${problemId}/`,
                 input: testcase.input,
                 output: testcase.output
@@ -65,6 +67,7 @@ const CreateProblem = () => {
 
     return (
         <div className="create-problem-page">
+            <Header /> {/* Add the Header component here */}
             <h1>Create Problem</h1>
             {!problemId ? (
                 <form onSubmit={handleCreateProblem} className="create-problem-form">

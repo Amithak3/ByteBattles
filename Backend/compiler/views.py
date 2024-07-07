@@ -14,7 +14,7 @@ from .serializers import SubmissionsSerializer
 from django.conf import settings
 from pathlib import Path
 from rest_framework import viewsets
-
+from rest_framework.decorators import action
 # Create your views here.
 authentication_classes = []
 permission_classes = []
@@ -149,3 +149,4 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     serializer_class = SubmissionsSerializer
     authentication_classes = []
     permission_classes = []
+    

@@ -1,62 +1,143 @@
+/* General Page Styles */
 .problem-detail-page {
     background-color: black;
     color: white;
     min-height: 100vh;
-}
-
-.problem-detail-content {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    padding: 20px;
-}
-
-.problem-detail-section,
-.code-editor-section,
-.output-section {
-    flex: 1;
-    margin: 18px;
-}
-
-.code-editor-section {
     display: flex;
     flex-direction: column;
 }
 
-textarea {
+/* Header Styles */
+.header {
     width: 100%;
-    height: 150px;
+    padding: 20px;
+    background-color: #1c1c1c;
+    text-align: center;
+}
+
+.problem-detail-content {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+}
+
+/* Problem Details Section */
+.problem-detail-section {
+    flex: 2;
+    margin-right: 20px;
+    padding: 20px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Code Editor Section */
+.code-editor-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    padding: 20px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Output and Submissions Section */
+.output-submissions-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.submissions-button-section {
+    margin-bottom: 20px;
+}
+
+.output-section {
+    flex: 1;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+}
+
+/* Textarea and Select Styles */
+textarea,
+select {
+    width: 100%;
     margin-top: 10px;
+    padding: 10px;
     background-color: #333;
     color: #fff;
     border: 1px solid #444;
+    border-radius: 5px;
 }
 
 select {
-    margin-bottom: 10px;
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #444;
+    margin-bottom: 20px;
 }
 
-button {
+/* Button Styles */
+button,
+.submissions-button {
+    width: 100%;
     margin-top: 10px;
     background-color: #e50914; /* Netflix red */
     color: #fff;
     border: none;
-    padding: 10px;
+    padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
-button:hover {
+button:hover,
+.submissions-button:hover {
     background-color: #b20710; /* Darker red */
 }
 
+/* Output Section Styles */
 .output-section pre {
     background-color: #333;
-    padding: 40px;
-    margin-right: 20px;
+    padding: 20px;
+    margin: 20px 0;
     border: 1px solid #444;
     color: #fff;
+    border-radius: 5px;
+    /* width: 100%; */
+    white-space: pre-wrap;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .problem-detail-content {
+        flex-direction: column;
+    }
+
+    .problem-detail-section,
+    .code-editor-section,
+    .output-submissions-section {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .problem-detail-content {
+        padding: 10px;
+    }
+
+    .problem-detail-section,
+    .code-editor-section,
+    .output-section {
+        padding: 15px;
+    }
+
+    button,
+    .submissions-button {
+        padding: 10px;
+        font-size: 14px;
+    }
 }

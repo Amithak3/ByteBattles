@@ -56,20 +56,17 @@ const ProblemDetail = () => {
     };
 
     const handleSubmit = async () => {
-        // console.log('id=', id);
         const token = localStorage.getItem('accessToken');
         if (!token) {
             console.error('No access token found');
             navigate('/login');  // Redirect to login if token is not found
             return;
         }
-        // console.log('user=', localStorage.getItem('username'));
 
         try {
             const response = await axios.post(
                 'http://127.0.0.1:8000/compiler/submit/',
                 {
-                    
                     problem_id: id, 
                     username: localStorage.getItem('username'), 
                     code,
@@ -90,6 +87,10 @@ const ProblemDetail = () => {
     };
 
     if (!problem) return <div>Loading...</div>;
+
+    const handleSubmissionsClick = () => {
+        navigate(`/submissions/${id}`);
+    };
 
     return (
         <div className="problem-detail-page">
@@ -121,9 +122,12 @@ const ProblemDetail = () => {
                     <button className="run-button" onClick={handleRun}>Run</button>
                     <button className="submit-button" onClick={handleSubmit}>Submit</button>
                 </div>
-                <div className="output-section">
-                    <h2>Output</h2>
-                    <pre>{output}</pre>
+                <div className="submissions-button-section">
+                    <button className="submissions-button" onClick={handleSubmissionsClick}>Submissions</button>
+                    <div className="output-section">
+                        <h2>Output</h2>
+                        <pre>{output}</pre>
+                    </div>
                 </div>
             </div>
         </div>
