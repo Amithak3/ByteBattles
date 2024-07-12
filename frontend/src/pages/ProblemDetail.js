@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import './ProblemDetail.css';
+import API_SERVER_URL from '../configs/config';
 
 const ProblemDetail = () => {
     const { id } = useParams();
@@ -16,7 +17,7 @@ const ProblemDetail = () => {
     useEffect(() => {
         const fetchProblem = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/problems/problems-api/${id}/`);
+                const response = await axios.get(`${API_SERVER_URL}/problems/problems-api/${id}/`);
                 setProblem(response.data);
             } catch (error) {
                 console.error('Error fetching problem:', error);
@@ -36,7 +37,7 @@ const ProblemDetail = () => {
 
         try {
             const response = await axios.post(
-                'http://127.0.0.1:8000/compiler/run/',
+                `${API_SERVER_URL}/compiler/run/`,
                 {
                     language,
                     code,
@@ -65,7 +66,7 @@ const ProblemDetail = () => {
 
         try {
             const response = await axios.post(
-                'http://127.0.0.1:8000/compiler/submit/',
+                `${API_SERVER_URL}/compiler/submit/`,
                 {
                     problem_id: id, 
                     username: localStorage.getItem('username'), 

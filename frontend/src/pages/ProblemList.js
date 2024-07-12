@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import './ProblemList.css';
+import  API_SERVER_URL  from '../configs/config';  // Assuming this is a named export
 
 const ProblemList = () => {
     const [problems, setProblems] = useState([]);
@@ -11,7 +12,7 @@ const ProblemList = () => {
     useEffect(() => {
         const fetchProblems = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/problems/problems-api/');
+                const response = await axios.get(`${API_SERVER_URL}/problems/problems-api/`);
                 setProblems(response.data);
             } catch (error) {
                 console.error('Error fetching problems:', error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CreateProblem.css';
 import Header from '../components/Header'; // Import the Header component
+import API_SERVER_URL from '../configs/config';
 
 const CreateProblem = () => {
     const [name, setName] = useState('');
@@ -18,9 +19,9 @@ const CreateProblem = () => {
         }
     }, [problemId]);
 
-    const fetchTestcases = async () => {
+    const fetchTestcases = async () => { 
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/problems/problems-api/${problemId}/testcases/`);
+            const response = await axios.get(`${API_SERVER_URL}/problems/problems-api/${problemId}/testcases/`);
             setCreatedTestcases(response.data);
         } catch (error) {
             console.error('Error fetching test cases:', error);
@@ -31,7 +32,7 @@ const CreateProblem = () => {
     const handleCreateProblem = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/problems/problems-api/', {
+            const response = await axios.post(`${API_SERVER_URL}/problems/problems-api/`, {
                 name,
                 description,
                 difficulty
@@ -49,9 +50,9 @@ const CreateProblem = () => {
     const handleSubmitTestcase = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://127.0.0.1:8000/problems/testcases-api/', {
+            await axios.post(`${API_SERVER_URL}/problems/testcases-api/`, {
                 //eslint-disable-next-line
-                problem: `http://127.0.0.1:8000/problems/problems-api/${problemId}/`,
+                problem: `${API_SERVER_URL}/problems/problems-api/${problemId}/`,
                 input: testcase.input,
                 output: testcase.output
             });

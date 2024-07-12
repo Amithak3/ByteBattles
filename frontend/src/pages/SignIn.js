@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from '../components/Header';
 import "./SignIn.css";
+import API_SERVER_URL from '../configs/config';
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const SignIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/auth/login/', formData);
+            const response = await axios.post(`${API_SERVER_URL}/auth/login/`, formData);
             const { access } = response.data.tokens;
             localStorage.setItem('accessToken', access);
             localStorage.setItem('username', formData.username);

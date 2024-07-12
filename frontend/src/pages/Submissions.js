@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import './Submissions.css';
+import API_SERVER_URL from '../configs/config';
 
 const Submissions = () => {
     const { id } = useParams();
@@ -13,7 +14,7 @@ const Submissions = () => {
     useEffect(() => {
         const fetchSubmissions = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/problems/problems-api/${id}/submissions/`);
+                const response = await axios.get(`${API_SERVER_URL}/problems/problems-api/${id}/submissions/`);
                 setSubmissions(response.data);
             } catch (error) {
                 console.error('Error fetching submissions:', error);
@@ -25,7 +26,7 @@ const Submissions = () => {
 
     const handleSubmissionClick = async (submissionId) => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/compiler/submissions/${submissionId}/`);
+            const response = await axios.get(`${API_SERVER_URL}/compiler/submissions/${submissionId}/`);
             setSelectedSubmission(response.data);
             setShowModal(true);
         } catch (error) {

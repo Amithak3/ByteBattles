@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; 
 import Header from '../components/Header';
 import "./Register.css";
-
+import API_SERVER_URL from '../configs/config';
 const Register = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ 
@@ -26,7 +26,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/auth/register/', formData); // Note the trailing slash
+            const response = await axios.post(`${API_SERVER_URL}/auth/register/`, formData); // Note the trailing slash
             console.log(response.data);
             navigate('/signin');
         } catch (error) {
