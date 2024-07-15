@@ -60,9 +60,11 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Add your frontend's origin here
+    "https://bytebattles.codes"
+    
+    # Add your frontend's origin here
 ]
-
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'ByteBattles.urls'
 
 TEMPLATES = [

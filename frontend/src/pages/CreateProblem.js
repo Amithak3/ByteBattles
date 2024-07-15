@@ -17,8 +17,8 @@ const CreateProblem = () => {
         if (problemId) {
             fetchTestcases();
         }
+        //eslint-disable-next-line
     }, [problemId]);
-
     const fetchTestcases = async () => { 
         try {
             const response = await axios.get(`${API_SERVER_URL}/problems/problems-api/${problemId}/testcases/`);
