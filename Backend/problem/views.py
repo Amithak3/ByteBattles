@@ -1,11 +1,11 @@
-from rest_framework.decorators import  action
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.decorators import  action # type: ignore
+from rest_framework.response import Response # type: ignore
+from rest_framework import status # type: ignore
 from .models import Problems, Testcases
 from problem.serializers import ProblemsSerializer, TestcaseSerializer
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import viewsets # type: ignore
+from rest_framework.permissions import IsAuthenticated # type: ignore
+from rest_framework_simplejwt.authentication import JWTAuthentication # type: ignore
 from django.shortcuts import get_object_or_404
 from compiler.models import Submissions
 from compiler.serializers import SubmissionsSerializer

@@ -1,5 +1,5 @@
 """
-WSGI config for ByteBattles project.
+WSGI config for _code_on_ project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ByteBattles.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', '_code_on_.settings')
 
 application = get_wsgi_application()
